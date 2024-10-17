@@ -1,0 +1,9 @@
+@using Dziennik.Views.UserManagement
+<ul class="nav nav-pills flex-column">
+	<li class="nav-item">
+		<a class="nav-link @ManageNavPages.Index(ViewContext)" id="users-overview" asp-controller="Overview" asp-action="Index">Overwiew</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link @ManageNavPages.RoleRequests(ViewContext)" id="role-requests" asp-controller="RoleRequests" asp-action="Index">Role Requests</a>
+	</li>
+</ul>

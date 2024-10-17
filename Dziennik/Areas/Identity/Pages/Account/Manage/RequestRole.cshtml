@@ -1,0 +1,40 @@
+@page
+@using Humanizer
+@model Dziennik.Areas.Identity.Pages.Account.Manage.RequestRole
+@{
+	ViewData["Title"] = "Request Role";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<table>
+	<thead>
+	<tr>
+		<th>Role</th>
+		<th>Requested On</th>
+		<th>Status</th>
+	</tr>
+	</thead>
+	@foreach (var request in Model.IssuedRequests)
+	{
+		<tr>
+			<td>@request.RequestedRole.Name</td>
+			<td>@request.RequestDate</td>
+			<td>@request.Status.Humanize()</td>
+		</tr>
+	}
+</table>
+
+<form method="post">
+	<div class="form-floating mb-3">
+		<label asp-for="Input!.RoleName"></label>
+		<select asp-for="Input!.RoleName">
+			<option value="Admin">Admin</option>
+			<option value="Teacher">Teacher</option>
+			<option value="Student">Student</option>
+			<option value="Parent">Parent</option>
+		</select>
+		<span asp-validation-for="Input!.RoleName"></span>
+	</div>
+	<button type="submit" class="btn btn-primary">Request Role</button>
+</form>

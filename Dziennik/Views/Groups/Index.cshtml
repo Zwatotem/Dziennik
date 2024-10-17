@@ -1,0 +1,56 @@
+@model IEnumerable<Dziennik.Models.Group>
+
+@{
+	ViewData["Title"] = "Index";
+	Layout            = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Name)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.DidacticLevel)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.DidacticCycle)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Supervisor)
+		</th>
+		<th></th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model)
+	{
+		@if (item.Supervisor?.Owner.ShortName is null) continue;
+		<tr>
+			<td>
+				@Html.DisplayFor(itemModel => item.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(itemModel => item.DidacticLevel)
+			</td>
+			<td>
+				@Html.DisplayFor(itemModel => item.DidacticCycle.PrettyDisplay)
+			</td>
+			<td>
+				@Html.DisplayFor(itemModel => item.Supervisor.Owner.ShortName)
+			</td>
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+				<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+				<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+			</td>
+		</tr>
+	}
+	</tbody>
+</table>

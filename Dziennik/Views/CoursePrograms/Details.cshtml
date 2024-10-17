@@ -1,0 +1,44 @@
+@using Dziennik.Models.Roles
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dziennik.Models.CourseProgram
+
+@{
+	ViewData["Title"] = "Details";
+	Layout            = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+	<h4>CourseProgram</h4>
+	<hr/>
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Description)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Description)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.DidacticLevel)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.DidacticLevel)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.DedicatedTeachers)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (var teacher in Model.DedicatedTeachers)
+				{
+					<li>@teacher.Owner.ShortName</li>
+				}
+			</ul>
+		</dd>
+	</dl>
+</div>
+<div>
+	<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+	<a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,83 @@
+@using Humanizer
+@model Dziennik.Models.User
+@{
+	ViewBag.Title = "Edit User";
+	Layout        = "_Layout";
+}
+
+<h2>Edit User</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>User</h4>
+		<hr/>
+		<!-- Add other properties here -->
+
+		<div class="form-group">
+			@Html.Label("Names", htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Names")
+			<div class="col-md-10">
+				<input type="text" name="Names" class="form-control" value="@string.Join(" ", Model.Names)" asp-for="Names"/>
+				@Html.ValidationMessage("Names", "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Surname, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		@* PESESL *@
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.PESEL, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PESEL, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.PESEL, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.Id)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<!-- Add other properties here -->
+
+		@* <div class="form-group"> *@
+		@*     @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2" }) *@
+		@*     <div class="col-md-10"> *@
+		@*         @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" }) *@
+		@*     </div> *@
+		@* </div> *@
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default"/>
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("Back to List", "Index", "Overview")
+</div>

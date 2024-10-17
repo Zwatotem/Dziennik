@@ -1,0 +1,82 @@
+@using System.Linq
+@model IEnumerable<Dziennik.Models.Course>
+
+@{
+	ViewData["Title"] = "Courses";
+	Layout            = "~/Views/Shared/_Layout.cshtml";
+	decimal overallAverage = default;
+	if (ViewBag.AverageFor is not null)
+	{
+		Dictionary<Guid, decimal> averages = ViewBag.AverageFor;
+		overallAverage = averages.Values.Aggregate((decimal a, decimal b) => a + b) / averages.Count;
+	}
+}
+
+<h1>Courses</h1>
+
+@if (User.IsInRole("Admin"))
+{
+	<p>
+		<a asp-action="Create">Create New</a>
+	</p>
+}
+@if (User.IsInRole("Student"))
+{
+	<dl>
+		<dt>Overall average</dt>
+		<dd>@overallAverage</dd>
+	</dl>
+}
+
+<table class="table">
+	<thead>
+	<tr>
+		<th>@Html.DisplayNameFor(model => model.Program.Description)</th>
+		<th>@Html.DisplayNameFor(model => model.Program.DidacticLevel)</th>
+		<th>@Html.DisplayNameFor(model => model.Teacher)</th>
+		<th>@Html.DisplayNameFor(model => model.Group)</th>
+		<th>@Html.DisplayNameFor(model => model.Group.DidacticCycle)</th>
+		@if (User.IsInRole("Student"))
+		{
+			<th>Average of marks</th>
+		}
+		<th></th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>@Html.DisplayFor(modelItem => item.Program.Description)</td>
+			<td>@Html.DisplayFor(modelItem => item.Program.DidacticLevel)</td>
+			<td>@Html.DisplayFor(modelItem => item.Teacher.Owner.ShortName)</td>
+			<td>@Html.DisplayFor(modelItem => item.Group.Name)</td>
+			<td>@Html.DisplayFor(modelItem => item.Group.DidacticCycle.PrettyDisplay)</td>
+			@if (User.IsInRole("Student"))
+			{
+				<td>@ViewBag.AverageFor[item.Id]</td>
+			}
+			<td>
+				@if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+				{
+					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+					<span>|</span>
+					<a asp-action="Details" asp-route-id="@item.Id">Details</a>
+					<span>|</span>
+				}
+				<a asp-controller="Tasks" asp-action="Index" asp-route-courseId="@item.Id">Tasks</a> |
+				<a asp-controller="Scheduling" asp-action="Index" asp-route-id="@item.RecurringPlan.Id">Schedule</a> |
+				@if (User.IsInRole("Student"))
+				{
+					<a asp-controller="Marks" asp-action="ByStudentCourse" asp-route-courseId="@item.Id">Marks</a>
+					<span>|</span>
+				}
+				@if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+				{
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				}
+			</td>
+		</tr>
+	}
+	</tbody>
+</table>

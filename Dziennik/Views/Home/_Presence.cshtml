@@ -1,0 +1,39 @@
+@model PresenceLog
+
+@{
+	var presenceVariants = Enum.GetValues<PresenceLog.PresenceType>();
+}
+
+<form asp-action="SavePresence" method="post">
+	<div class="form-group">
+		<label for="teacherPresence">Teacher Presence</label>
+		<input type="hidden" asp-for="Id" value="@Model.Id"/>
+		<input type="hidden" asp-for="TeacherId" value="@Model.TeacherId"/>
+		@Html.DropDownListFor(model => model.Teacher, new SelectList(presenceVariants), new { @class = "form-control" })
+	</div>
+	<table class="table">
+		<thead>
+		<tr>
+			<th> Student </th>
+			<th> Presence </th>
+		</tr>
+		</thead>
+		<tbody>
+		@for (var i = 0;
+					i < Model.Students.Count;
+					i++)
+		{
+			<tr>
+				<td> @Model.Students[i].Student.Owner.ShortName </td>
+				<td>
+					@Html.HiddenFor(m => m.Students[i].StudentId, new { value = $"{Model.Students[i].StudentId}" })
+					@Html.HiddenFor(m => m.Students[i].PresenceLogId, new { value = $"{Model.Students[i].PresenceLogId}" })
+					@Html.HiddenFor(m => m.Students[i].PresenceLog, new { value = $"{Model.Students[i].PresenceLog}" })
+					@Html.DropDownListFor(model => model.Students[i].Presence, new SelectList(presenceVariants), new { @class = "form-control" })
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+	<button type="submit" class="btn btn-primary"> Save </button>
+</form>

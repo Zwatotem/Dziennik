@@ -1,0 +1,23 @@
+@model dynamic
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+@{
+	ViewBag.Title = "User Management";
+}
+
+<h2>Manage accounts of users</h2>
+
+
+<div>
+	<h2>Change account settings</h2>
+	<hr/>
+	<div class="row">
+		<div class="col-md-3">
+			<partial name="/Views/UserManagement/_ManageNav.cshtml"/>
+		</div>
+		<div class="col-md-9">
+			@RenderBody()
+		</div>
+	</div>
+</div>

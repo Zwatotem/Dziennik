@@ -1,0 +1,54 @@
+@model List<Dziennik.Models.RoleRequest>
+@{
+	Layout                 = "/Views/UserManagement/_Layout.cshtml";
+	ViewData["ActivePage"] = "Role Requests";
+}
+
+<h3>Role Requests</h3>
+
+<div class="row">
+	<div class="col-md-9">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Role Requests</h4>
+				<hr/>
+				<table class="table">
+					<thead>
+					<tr>
+						<th>
+							Role
+						</th>
+						<th>
+							User name
+						</th>
+						<th>
+							Request date
+						</th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.RequestedRole.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.User.UserName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.RequestDate)
+							</td>
+							<td>
+								<a class="btn-success" asp-controller="RoleRequests" asp-action="Accept" asp-route-rolerequestid="@item.Id">Accept</a>
+								<a class="btn-danger" asp-controller="RoleRequests" asp-action="Reject" asp-route-rolerequestid="@item.Id">Reject</a>
+							</td>
+						</tr>
+					}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

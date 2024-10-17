@@ -1,0 +1,66 @@
+@using Dziennik.Models.Roles
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dziennik.Models.EditCourseProgram
+
+@{
+	ViewData["Title"] = "Edit";
+	Layout            = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>CourseProgram</h4>
+<hr/>
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Id"/>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<input asp-for="Description" class="form-control"/>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DidacticLevel" class="control-label"></label>
+				<select asp-for="DidacticLevel" class="form-control">
+					@foreach (DidacticLevel dl in ViewBag.DidacticLevels)
+					{
+						<option value="@dl" selected="@(Model.DidacticLevel == dl)">@dl.ToString()</option>
+					}
+				</select>
+				<span asp-validation-for="DidacticLevel" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DedicatedTeachers" class="control-label"></label>
+				<button id="unselectButton" class="btn btn-link">Unselect</button>
+				<select asp-for="DedicatedTeachers" class="form-control" id="teacherDropdown" multiple>
+					@foreach (Teacher teacher in ViewBag.Teachers)
+					{
+						<option value="@teacher.Id" selected="@(Model.DedicatedTeachers.Contains(teacher.Id))">
+							@teacher.Owner.ShortName
+						</option>
+					}
+				</select>
+				<span asp-validation-for="DedicatedTeachers" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+	document.getElementById('unselectButton').addEventListener('click', function() {
+		event.preventDefault();
+    var selectElement = document.getElementById('teacherDropdown');
+    for(var i = 0; i < selectElement.options.length; i++) {
+        selectElement.options[i].selected = false;
+    }
+});
+</script>

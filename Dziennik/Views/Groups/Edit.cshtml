@@ -1,0 +1,76 @@
+@using Dziennik.Models.Roles
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dziennik.Models.EditGroup
+
+@{
+	ViewData["Title"] = "Edit";
+	Layout            = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 xmlns="http://www.w3.org/1999/html">Edit</h1>
+
+<h4>Group</h4>
+<hr/>
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Id"/>
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<input asp-for="Name" class="form-control"/>
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DidacticLevel" class="control-label"></label>
+				<select asp-for="DidacticLevel" class="form-control">
+					@* @ViewBag.DidacticLevels.ToString() *@
+					@foreach (DidacticLevel dl in ViewBag.DidacticLevels)
+					{
+						<option value="@dl">@dl.ToString()</option>
+					}
+				</select>
+				<span asp-validation-for="DidacticLevel" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Didactic Cycle</label>
+				<select asp-for="DidacticCycleId" class="form-control">
+					@* @ViewBag.DidacticCycles.ToString() *@
+					@foreach (DidacticCycle dc in ViewBag.DidacticCycles)
+					{
+						<option value="@dc.Id">@dc.PrettyDisplay</option>
+					}
+				</select>
+				<span asp-validation-for="DidacticCycleId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="SupervisorId" class="control-label"></label>
+				<select asp-for="SupervisorId" class="form-control">
+					@* @ViewBag.Supervisors.ToString() *@
+					@foreach (Teacher teacher in ViewBag.Supervisors)
+					{
+						<option value="@teacher.Id">@teacher.Owner.ShortName</option>
+					}
+				</select>
+				<span asp-validation-for="SupervisorId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Student</label>
+				<select asp-for="StudentIds" class="form-control" multiple>
+					@foreach (Student student in ViewBag.Students)
+					{
+						<option value="@student.Id" selected="@(Model.StudentIds.Contains(student.Id))}">@student.Owner.ShortName</option>
+					}
+				</select>
+				<span asp-validation-for="StudentIds" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>

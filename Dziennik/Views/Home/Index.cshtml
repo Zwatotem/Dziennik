@@ -1,0 +1,43 @@
+﻿@model Dziennik.Models.HomeScreen
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Witaj w dzienniku</h1>
+</div>
+@if (@Model.CurrentEvent != null)
+{
+	<div id="current-event">
+		<h2>
+			<a class="text-decoration-none text-primary"
+				 asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CurrentEvent.Course.Id">
+				@Model.CurrentEvent.Description
+			</a>
+		</h2>
+		<p>@Model.CurrentEvent.StartDate.ToString("HH:mm") - @Model.CurrentEvent.EndDate.ToString("HH:mm")</p>
+
+
+		@if (User?.IsInRole("Teacher") ?? false)
+		{
+			<partial name="_Presence" model="Model.CurrentEvent.Presence"/>
+		}
+
+		<hr/>
+
+	</div>
+}
+@foreach (var lesson in Model.UpcomingEvents)
+{
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title">
+				<a class="text-decoration-none text-primary"
+					 asp-controller="Courses" asp-action="Details" asp-route-id="@lesson.Course.Id">
+					@lesson.Description
+				</a>
+			</h5>
+			<p class="card-text">@lesson.StartDate - @lesson.EndDate.ToString("HH:mm")</p>
+		</div>
+	</div>
+}

@@ -1,0 +1,52 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Dziennik.Models.Scheduling.RecurringEvent>
+
+@{
+	ViewBag.Title = "title";
+	Layout        = "_Layout";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create" asp-route-planId="@ViewBag.id">Create New</a>
+</p>
+<table class="table">
+	<thead>
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.DayOfWeek)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.StartTime)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.EndTime)
+		</th>
+		<th></th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(itemModel => item.DayOfWeek)
+			</td>
+			<td>
+				@Html.DisplayFor(itemModel => item.StartTime)
+			</td>
+			<td>
+				@Html.DisplayFor(itemModel => item.EndTime)
+			</td>
+			<td>
+				@if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+				{
+					<a asp-action="Edit" asp-route-eventId="@item.Id" asp-route-planId="@ViewBag.id">Edit</a> <span>|</span>
+					<a asp-action="Delete" asp-route-eventId="@item.Id" asp-route-planId="@ViewBag.id">Delete</a>
+				}
+			</td>
+		</tr>
+	}
+	</tbody>
+</table>

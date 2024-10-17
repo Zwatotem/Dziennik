@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dziennik.Models.Scoring.Mark
+
+@{
+	ViewBag.Title = "Edit";
+	Layout        = "_Layout";
+}
+
+<h4>Mark</h4>
+<hr/>
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="TaskId" value="@ViewBag.TaskId" class="form-control"/>
+			<div class="form-group">
+				<label asp-for="RecieverId" class="control-label"></label>
+				<select asp-for="RecieverId" class="form-control">
+					@foreach (var student in ViewBag.Students)
+					{
+						<option value="@student.Id" selected="@(student.Id == Model.RecieverId)">
+							@student.Owner.ShortName
+						</option>
+					}
+				</select>
+				<span asp-validation-for="RecieverId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Value" class="control-label"></label>
+				<input type="number" asp-for="Value" class="form-control"/>
+				<span asp-validation-for="Value" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" valuea="Create" class="btn btn-primary"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="ByTask" asp-route-taskId="@ViewBag.TaskId">Back to List</a>
+</div>
